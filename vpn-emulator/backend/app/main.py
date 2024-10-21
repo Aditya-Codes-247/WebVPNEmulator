@@ -1,25 +1,29 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 app = FastAPI()
 
-# Define the response model for VPN protocol data flow
+# Allow CORS (Cross-Origin Requests)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Allow requests from React frontend
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class VPNResponse(BaseModel):
     dataFlow: list
 
-# VPN emulation endpoint
 @app.get("/start-vpn/{protocol}", response_model=VPNResponse)
 async def start_vpn(protocol: str):
-    """
-    Endpoint to simulate VPN protocol based on user input (PPTP, L2TP, IPSec).
-    Returns the data flow representing the steps of each protocol.
-    """
-
+    # VPN protocol emulation logic
     if protocol == "PPTP":
         data_flow = [
             {"label": "PPTP Start", "description": "Establishing PPTP tunnel"},
             {"label": "Authentication", "description": "Using MS-CHAP for user authentication"},
-            {"label": "Data Encryption", "description": "Encrypting data using MPPE (Microsoft Point-to-Point Encryption)"}
+            {"label": "Data Encryption", "description": "Encrypting data using MPPE"}
         ]
     elif protocol == "L2TP":
         data_flow = [
@@ -34,8 +38,6 @@ async def start_vpn(protocol: str):
             {"label": "Data Encryption", "description": "Encrypting data using AES-256"}
         ]
     else:
-        # Error handling for unsupported protocol
-        data_flow = [{"label": "Error", "description": "Unknown protocol selected. Please select a valid VPN protocol."}]
-    
-    # Return the VPN protocol's data flow
+        data_flow = [{"label": "Error", "description": "Unknown protocol"}]
+
     return VPNResponse(dataFlow=data_flow)
