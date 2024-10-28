@@ -9,7 +9,12 @@ const nextConfig: NextConfig = {
     domains: ['localhost'],
   },
   webpack: (config: Configuration, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    config.externals = [...(config.externals || []), { canvas: 'canvas' }];
+    // Check if externals is an array and append accordingly
+    if (Array.isArray(config.externals)) {
+      config.externals.push({ canvas: 'canvas' });
+    } else {
+      config.externals = [{ canvas: 'canvas' }];
+    }
     return config;
   },
 };

@@ -478,7 +478,9 @@ export default function VPNEmulator() {
                 {protocolInfo.steps.map((step, index) => (
                   <li
                     key={step.id}
-                    ref={(el) => (stepsRef.current[index] = el)}
+                    ref={(el) => {
+                      stepsRef.current[index] = el;  // Assignment only, no return value
+                    }}
                     className="opacity-0 transform translate-y-4"
                   >
                     <Card className="bg-white/20 backdrop-blur-sm border-white/30">
