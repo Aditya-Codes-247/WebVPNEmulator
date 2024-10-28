@@ -5,10 +5,10 @@ const nextConfig = {
   images: {
     domains: ['localhost'],
   },
-  webpack: (config) => {
-    config.externals = [...config.externals, { canvas: 'canvas' }];
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    config.externals = [...(config.externals || []), { canvas: 'canvas' }];
     return config;
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
