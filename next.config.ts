@@ -1,14 +1,17 @@
+import { NextConfig } from 'next';
+import { Configuration } from 'webpack';
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
     domains: ['localhost'],
   },
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+  webpack: (config: Configuration, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.externals = [...(config.externals || []), { canvas: 'canvas' }];
     return config;
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
